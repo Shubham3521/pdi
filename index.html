@@ -281,7 +281,7 @@
 
 <header>
     <h1>KIA CARENS HTE EX — PDI Checklist</h1>
-    <div class="subtitle">Pre-Delivery Inspection &bull; <span id="date-display"></span></div>
+    <div class="subtitle">PDI Only (Inspection Day) &bull; Delivery Later &bull; <span id="date-display"></span></div>
     <div class="progress-bar-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
@@ -295,17 +295,11 @@
         <h2>&#128188; Things to Bring</h2>
         <div class="bring-grid">
             <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Booking Receipt / Allotment Letter</label>
-            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Aadhar Card (Original + Copy)</label>
-            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> PAN Card</label>
-            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Passport-size Photos (4-6)</label>
-            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Address Proof (Electricity Bill / Passport)</label>
-            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Driving Licence</label>
-            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Demand Draft / Cheque / Payment Proof</label>
-            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Insurance Copy (if arranged separately)</label>
-            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Loan Sanction Letter (if financed)</label>
-            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> OBD Scanner / Tyre Gauge (optional)</label>
             <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Mobile Phone (for photos & videos)</label>
             <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Torch / Flashlight</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> OBD Scanner / Tyre Gauge (optional)</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Pen & Notepad (to note issues)</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> USB Cable (to test Android Auto / CarPlay)</label>
         </div>
     </div>
 
@@ -313,15 +307,17 @@
     <div class="tips-section">
         <h2>&#128161; Important Tips</h2>
         <ul>
+            <li><strong>Today is PDI only, NOT delivery</strong> — inspect thoroughly, note issues, approve loan later.</li>
             <li><strong>Go early morning</strong> — inspect the car in daylight to spot paint defects easily.</li>
-            <li><strong>Do PDI before signing any papers</strong> — once you sign, complaints are harder to raise.</li>
+            <li><strong>Do NOT sign any delivery papers today</strong> — you are only inspecting.</li>
             <li><strong>Check the VIN</strong> on chassis, dashboard, and documents — all must match.</li>
-            <li><strong>Manufacturing date</strong> should be within 3 months of delivery. Reject if older than 6 months.</li>
             <li><strong>Odometer should read under 20-30 km</strong> — anything over 50 km is a red flag.</li>
-            <li><strong>Take photos & videos</strong> of everything — timestamp proof protects you later.</li>
+            <li><strong>Take photos & videos of EVERYTHING</strong> — this is your proof if issues are found later or before delivery.</li>
             <li><strong>Don't rush</strong> — a thorough PDI takes 60–90 minutes. The dealer must allow it.</li>
             <li><strong>Check the car OUTSIDE the showroom</strong> — parking lot lighting hides defects.</li>
-            <li><strong>Note every issue</strong> in writing and get dealer acknowledgment before delivery.</li>
+            <li><strong>Note every issue in writing</strong> — get dealer to acknowledge & promise fix before delivery day.</li>
+            <li><strong>Mfg. date is ~4 months old</strong> — you know this already. Use it to negotiate extras if not done.</li>
+            <li><strong>After PDI</strong> — approve loan only if you're satisfied. Pick a weekday for delivery.</li>
         </ul>
     </div>
 
@@ -332,19 +328,14 @@
             <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
         </div>
         <div class="section-body">
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Invoice matches agreed on-road price</span><span class="hint">Verify ex-showroom, RTO, insurance, accessories — no hidden charges</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Temporary registration papers ready</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Insurance policy copy received</span><span class="hint">Verify IDV amount, add-on covers, start date is today</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Form 20 & Form 21 received</span><span class="hint">Required for permanent RTO registration</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Owner's manual & service booklet received</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Warranty card with start date stamped</span><span class="hint">3 years / unlimited km standard warranty</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Free service coupons / RSA details</span><span class="hint">Kia provides 3 free services & roadside assistance</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Duplicate key received (total 2 keys + key card)</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">VIN on invoice matches chassis & dashboard</span><span class="hint critical">&#9888; CRITICAL — mismatch = wrong car</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Engine number on invoice matches engine bay</span><span class="hint critical">&#9888; CRITICAL</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Colour code & variant (HTE EX) on docs matches car</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Manufacturing date is ~4 months old (known & accepted)</span><span class="hint">Already aware. Negotiate discount if not already done. Check for battery health & tyre date codes — older stock can have flat spots or weak battery</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Extended warranty / AMC discussed</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Confirm on-road price breakdown with dealer</span><span class="hint">Verify ex-showroom, RTO, insurance, accessories — no hidden charges. Note it down for loan approval later</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">VIN on booking matches chassis & dashboard</span><span class="hint critical">&#9888; CRITICAL — mismatch = wrong car. Note VIN for loan docs</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Engine number matches booking / invoice</span><span class="hint critical">&#9888; CRITICAL — photograph the engine number plate</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Colour code & variant (HTE EX) matches what you booked</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Manufacturing date is ~4 months old (known & accepted)</span><span class="hint">Already aware. Negotiate extras if not already done. Check battery health & tyre date codes</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Photograph VIN plate, engine number, odometer</span><span class="hint">You'll need these photos for loan paperwork</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Ask about insurance options & IDV amount</span><span class="hint">Compare dealer insurance vs external — decide before delivery day</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Discuss extended warranty / AMC pricing</span></div></div>
         </div>
     </div>
 
@@ -486,7 +477,7 @@
             <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Engine starts smoothly — no unusual sounds</span></div></div>
             <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Idle is smooth — no vibrations or rough running</span></div></div>
             <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No smoke from exhaust (white puff on start is okay)</span><span class="hint">Blue smoke = oil burning. Black smoke = fuel issue.</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No engine warning lights on dashboard after start</span><span class="hint critical">&#9888; Check Engine light = DO NOT accept delivery</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No engine warning lights on dashboard after start</span><span class="hint critical">&#9888; Check Engine light = DO NOT approve loan until resolved</span></div></div>
             <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Engine temperature gauge stable after 5 mins</span></div></div>
         </div>
     </div>
@@ -567,20 +558,26 @@
         </div>
     </div>
 
-    <!-- SECTION 11: Final Checklist -->
+    <!-- SECTION 11: PDI Wrap-up & Next Steps -->
     <div class="section" id="sec-final">
         <div class="section-header" onclick="toggleSection(this)">
-            <h2><span class="icon">&#9989;</span> Final Before Signing</h2>
+            <h2><span class="icon">&#9989;</span> PDI Wrap-up & Next Steps</h2>
             <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
         </div>
         <div class="section-body">
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All issues noted & acknowledged by dealer in writing</span><span class="hint critical">&#9888; Get written acknowledgment for every issue found</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Dealer walkthrough / demonstration completed</span><span class="hint">Infotainment, AC, Kia Connect, drive modes, etc.</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">First free service date discussed</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Service center location & contact saved</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Roadside assistance number saved in phone</span><span class="hint">Kia RSA: 1800-108-5000 (toll free)</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Take delivery photos — all angles, VIN, odometer</span></div></div>
-            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Satisfaction with PDI — ready to accept delivery</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All issues noted & acknowledged by dealer in writing</span><span class="hint critical">&#9888; Get written acknowledgment — issues must be fixed BEFORE delivery day</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Dealer confirms issues will be fixed before delivery</span><span class="hint">Get a timeline — when will fixes be done?</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Took photos of car from all angles</span><span class="hint">Document current state — proof that any new damage happened at dealer's end</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Photographed odometer reading</span><span class="hint">Compare with delivery day — should not increase much</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Satisfied with car condition — ready to approve loan</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Discussed preferred delivery day (weekday)</span></div></div>
+
+            <div class="subsection-title">For Delivery Day (Reminders)</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Bring: Aadhar, PAN, address proof, photos, driving licence</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Bring: Loan sanction letter / payment proof</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Re-check all PDI issues are actually fixed</span><span class="hint critical">&#9888; DO NOT accept delivery if issues from PDI are still present</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Collect: 2 keys + key card, owner's manual, warranty card, Form 20/21, insurance</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Verify odometer hasn't jumped significantly since PDI</span></div></div>
         </div>
     </div>
 
