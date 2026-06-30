@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kia Carens HTE EX — PDI Checklist</title>
+    <style>
+        :root {
+            --kia-red: #bb162b;
+            --kia-dark: #1a1a2e;
+            --kia-gray: #f4f4f8;
+            --green: #22c55e;
+            --yellow: #eab308;
+            --red: #ef4444;
+            --border: #e2e8f0;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--kia-gray);
+            color: #1e293b;
+            line-height: 1.5;
+            padding-bottom: 80px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--kia-dark), #16213e);
+            color: white;
+            padding: 24px 20px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.5px; }
+        header .subtitle { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
+        .progress-bar-container {
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            height: 10px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green), #4ade80);
+            border-radius: 20px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+        .progress-text {
+            font-size: 0.75rem;
+            margin-top: 6px;
+            opacity: 0.9;
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 16px; }
+
+        /* Things to Bring */
+        .bring-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid #3b82f6;
+        }
+        .bring-section h2 {
+            font-size: 1.1rem;
+            color: #3b82f6;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .bring-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .bring-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #f0f7ff;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .bring-item.packed { background: #dcfce7; text-decoration: line-through; opacity: 0.7; }
+        .bring-item input[type="checkbox"] { accent-color: var(--green); width: 16px; height: 16px; }
+
+        /* Tips */
+        .tips-section {
+            background: linear-gradient(135deg, #fef3c7, #fef9c3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--yellow);
+        }
+        .tips-section h2 { font-size: 1.1rem; color: #92400e; margin-bottom: 12px; }
+        .tips-section ul { padding-left: 20px; }
+        .tips-section li { font-size: 0.85rem; margin-bottom: 6px; color: #78350f; }
+
+        /* Checklist sections */
+        .section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .section-header:hover { background: #f8fafc; }
+        .section-header h2 {
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-header .icon { font-size: 1.3rem; }
+        .section-badge {
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .badge-pending { background: #fee2e2; color: var(--red); }
+        .badge-partial { background: #fef3c7; color: #92400e; }
+        .badge-done { background: #dcfce7; color: #166534; }
+        .section-body { padding: 0 20px 16px; display: none; }
+        .section.open .section-body { display: block; }
+        .section-header .chevron { transition: transform 0.3s; font-size: 0.8rem; color: #94a3b8; }
+        .section.open .section-header .chevron { transform: rotate(180deg); }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.88rem;
+        }
+        .check-item:last-child { border-bottom: none; }
+        .check-item input[type="checkbox"] {
+            accent-color: var(--green);
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .check-item.checked .check-text { text-decoration: line-through; opacity: 0.5; }
+        .check-text { flex: 1; }
+        .check-text .label { font-weight: 500; }
+        .check-text .hint { display: block; font-size: 0.78rem; color: #64748b; margin-top: 2px; }
+        .check-text .critical { color: var(--red); font-weight: 600; font-size: 0.75rem; }
+
+        .subsection-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            padding: 12px 0 6px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 4px;
+        }
+
+        /* Notes */
+        .notes-area {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            resize: vertical;
+            min-height: 80px;
+            margin-top: 8px;
+        }
+
+        /* Issues Log */
+        .issues-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--red);
+        }
+        .issues-section h2 { font-size: 1.1rem; color: var(--red); margin-bottom: 12px; }
+        .issue-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+        .issue-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+        }
+        .issue-btn {
+            padding: 10px 18px;
+            background: var(--red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .issue-list { list-style: none; }
+        .issue-list li {
+            padding: 10px 14px;
+            background: #fef2f2;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .issue-list li .remove-issue {
+            background: none;
+            border: none;
+            color: var(--red);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0 4px;
+        }
+
+        /* Floating summary */
+        .float-summary {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--kia-dark);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            z-index: 100;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.2);
+        }
+        .float-summary .stats { display: flex; gap: 16px; }
+        .float-summary .stat-val { font-weight: 700; }
+
+        .reset-btn {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            .bring-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.2rem; }
+            .issue-input-row { flex-direction: column; }
+            .float-summary { flex-direction: column; gap: 8px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>KIA CARENS HTE EX — PDI Checklist</h1>
+    <div class="subtitle">Pre-Delivery Inspection &bull; <span id="date-display"></span></div>
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText">0 / 0 checked</div>
+</header>
+
+<div class="container">
+
+    <!-- THINGS TO BRING -->
+    <div class="bring-section">
+        <h2>&#128188; Things to Bring</h2>
+        <div class="bring-grid">
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Booking Receipt / Allotment Letter</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Aadhar Card (Original + Copy)</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> PAN Card</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Passport-size Photos (4-6)</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Address Proof (Electricity Bill / Passport)</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Driving Licence</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Demand Draft / Cheque / Payment Proof</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Insurance Copy (if arranged separately)</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Loan Sanction Letter (if financed)</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> OBD Scanner / Tyre Gauge (optional)</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Mobile Phone (for photos & videos)</label>
+            <label class="bring-item"><input type="checkbox" onchange="this.parentElement.classList.toggle('packed', this.checked); saveState()"> Torch / Flashlight</label>
+        </div>
+    </div>
+
+    <!-- PRO TIPS -->
+    <div class="tips-section">
+        <h2>&#128161; Important Tips</h2>
+        <ul>
+            <li><strong>Go early morning</strong> — inspect the car in daylight to spot paint defects easily.</li>
+            <li><strong>Do PDI before signing any papers</strong> — once you sign, complaints are harder to raise.</li>
+            <li><strong>Check the VIN</strong> on chassis, dashboard, and documents — all must match.</li>
+            <li><strong>Manufacturing date</strong> should be within 3 months of delivery. Reject if older than 6 months.</li>
+            <li><strong>Odometer should read under 20-30 km</strong> — anything over 50 km is a red flag.</li>
+            <li><strong>Take photos & videos</strong> of everything — timestamp proof protects you later.</li>
+            <li><strong>Don't rush</strong> — a thorough PDI takes 60–90 minutes. The dealer must allow it.</li>
+            <li><strong>Check the car OUTSIDE the showroom</strong> — parking lot lighting hides defects.</li>
+            <li><strong>Note every issue</strong> in writing and get dealer acknowledgment before delivery.</li>
+        </ul>
+    </div>
+
+    <!-- SECTION 1: Documents -->
+    <div class="section open" id="sec-docs">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#128196;</span> Documents & Paperwork</h2>
+            <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
+        </div>
+        <div class="section-body">
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Invoice matches agreed on-road price</span><span class="hint">Verify ex-showroom, RTO, insurance, accessories — no hidden charges</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Temporary registration papers ready</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Insurance policy copy received</span><span class="hint">Verify IDV amount, add-on covers, start date is today</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Form 20 & Form 21 received</span><span class="hint">Required for permanent RTO registration</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Owner's manual & service booklet received</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Warranty card with start date stamped</span><span class="hint">3 years / unlimited km standard warranty</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Free service coupons / RSA details</span><span class="hint">Kia provides 3 free services & roadside assistance</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Duplicate key received (total 2 keys + key card)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">VIN on invoice matches chassis & dashboard</span><span class="hint critical">&#9888; CRITICAL — mismatch = wrong car</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Engine number on invoice matches engine bay</span><span class="hint critical">&#9888; CRITICAL</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Colour code & variant (HTE EX) on docs matches car</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Manufacturing date within last 3 months</span><span class="hint">Check month/year on VIN plate (B-pillar or door jamb)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Extended warranty / AMC discussed</span></div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: Exterior -->
+    <div class="section" id="sec-exterior">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#128663;</span> Exterior Body & Paint</h2>
+            <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
+        </div>
+        <div class="section-body">
+            <div class="subsection-title">Paint & Body Panels</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No scratches, dents, or swirl marks on any panel</span><span class="hint">Check hood, roof, doors, fenders, bumpers, boot lid — in sunlight</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Paint colour uniform across all panels</span><span class="hint">Look for shade differences or orange-peel texture = repaint</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Panel gaps even and consistent</span><span class="hint">Check gaps between doors-fenders, hood-fenders, boot-body</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No rust or bubbling under paint</span><span class="hint">Check wheel arches, door bottoms, and underbody edges</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All protective films / stickers present</span></div></div>
+
+            <div class="subsection-title">Glass & Mirrors</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Windshield — no chips, cracks, or distortion</span><span class="hint">Check from inside and outside. Look for air bubbles</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All windows — no scratches or chips</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">ORVMs — both intact, no scratches</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Rear windshield & defogger lines intact</span></div></div>
+
+            <div class="subsection-title">Lights</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Headlamps — both working (low & high beam)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">DRLs working</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Fog lamps — both working (if equipped)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Tail lamps, brake lights, reverse light working</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Indicators — all 4 corners + side repeaters</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Hazard lights working</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Number plate light working</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No condensation / moisture inside any light housing</span><span class="hint critical">&#9888; Moisture inside = defective seal, demand replacement</span></div></div>
+
+            <div class="subsection-title">Wheels & Tyres</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All 4 tyres same brand, size & manufacturing date</span><span class="hint">Kia Carens HTE: 205/65 R16. Tyre date code (DOT) within 6 months</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Tyre pressure correct (33-35 PSI cold)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No cuts, bulges, or uneven wear on tyres</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Wheel covers / steel rims in good condition</span><span class="hint">HTE EX comes with steel wheels + covers</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All wheel nuts properly torqued (confirm with wrench)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Spare tyre present, inflated, with jack & wheel wrench</span></div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: Interior -->
+    <div class="section" id="sec-interior">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#128186;</span> Interior & Cabin</h2>
+            <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
+        </div>
+        <div class="section-body">
+            <div class="subsection-title">Seats & Upholstery</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All seats — no tears, stains, or loose stitching</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Driver seat adjustment works (front/back, recline)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All 3 rows seat folding mechanism works smoothly</span><span class="hint">Carens is a 6/7 seater — check all row adjustments</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All headrests present and adjustable</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All seatbelts working — click, lock, retract</span><span class="hint">Test every seatbelt across all 3 rows</span></div></div>
+
+            <div class="subsection-title">Dashboard & Controls</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Dashboard — no scratches, rattles, or gaps</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Steering wheel — no damage, buttons work</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Instrument cluster — all warning lights illuminate on ignition then go off</span><span class="hint critical">&#9888; Any warning light staying on = issue</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Odometer reading under 20 km</span><span class="hint critical">&#9888; Above 50 km — demand explanation or reject</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Horn working</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Wipers & washers — front and rear</span></div></div>
+
+            <div class="subsection-title">Doors, Windows & Locks</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All doors open/close smoothly — no creaks</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All power windows — up/down smoothly, auto-up/down on driver side</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Central locking — lock/unlock all doors</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Child locks on rear doors working</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Boot / tailgate opens and closes properly</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Fuel flap opens from inside release</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Bonnet release works from inside</span></div></div>
+
+            <div class="subsection-title">Storage & Convenience</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Glove box — opens, closes, has light</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All cup holders and storage compartments intact</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Sun visors — both with vanity mirrors</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Interior cabin lights / reading lamps work</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">12V charging socket working</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">USB charging ports — all rows</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Floor mats provided and properly fitted</span></div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 4: Infotainment & Electricals -->
+    <div class="section" id="sec-electricals">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#127925;</span> Infotainment & Electricals</h2>
+            <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
+        </div>
+        <div class="section-body">
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Touchscreen / audio system powers on</span><span class="hint">HTE EX gets 8-inch touchscreen</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All speakers working — check each speaker individually</span><span class="hint">Play music & adjust balance left/right, fade front/rear</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Bluetooth pairing works</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Android Auto / Apple CarPlay works (USB)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">FM / AM radio reception</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Reverse parking camera works (if equipped)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Steering-mounted audio / call controls work</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Kia Connect app — setup and demo by dealer</span></div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 5: AC & Climate -->
+    <div class="section" id="sec-ac">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#10052;&#65039;</span> AC & Climate Control</h2>
+            <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
+        </div>
+        <div class="section-body">
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">AC blows cold air on all fan speeds</span><span class="hint">Test on max — should feel cold within 1-2 minutes</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Heater blows warm air</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All vents — air flows from every vent (front & rear)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Rear AC / blower works (2nd & 3rd row)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">AC mode selector works (face, feet, defog)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Recirculation button works</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No unusual smell from AC vents</span><span class="hint">Musty smell = possible water/mold in AC system</span></div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 6: Engine & Under the Hood -->
+    <div class="section" id="sec-engine">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#9881;&#65039;</span> Engine & Under the Hood</h2>
+            <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
+        </div>
+        <div class="section-body">
+            <div class="subsection-title">Visual Inspection</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Engine bay clean — no oil leaks, coolant leaks, or stains</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Engine oil level correct (dipstick check)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Coolant level between min/max marks</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Brake fluid level correct</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Windshield washer fluid topped up</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Battery terminals clean, no corrosion</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All hoses and belts — no cracks, secure</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Air filter housing properly sealed</span></div></div>
+
+            <div class="subsection-title">Running Engine</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Engine starts smoothly — no unusual sounds</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Idle is smooth — no vibrations or rough running</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No smoke from exhaust (white puff on start is okay)</span><span class="hint">Blue smoke = oil burning. Black smoke = fuel issue.</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No engine warning lights on dashboard after start</span><span class="hint critical">&#9888; Check Engine light = DO NOT accept delivery</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Engine temperature gauge stable after 5 mins</span></div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 7: Under the Car -->
+    <div class="section" id="sec-under">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#128269;</span> Under the Car</h2>
+            <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
+        </div>
+        <div class="section-body">
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No fluid leaks on ground under the car</span><span class="hint">Let car idle 5 min, then check for drips — oil, coolant, brake fluid</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Underbody protection intact — no scrapes or hanging parts</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Exhaust pipe — no rust, dents, or loose hangers</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Suspension — bounce each corner, should rebound once</span><span class="hint">More than one bounce = weak shock absorber</span></div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 8: Test Drive -->
+    <div class="section" id="sec-drive">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#128739;</span> Short Test Drive</h2>
+            <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
+        </div>
+        <div class="section-body">
+            <div class="subsection-title">Brakes & Steering</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Brakes — firm pedal, car stops straight, no pulling</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Handbrake / EPB holds car on slope</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Steering — returns to center, no vibration or play</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Car drives straight on flat road — no pulling left/right</span></div></div>
+
+            <div class="subsection-title">Transmission</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Clutch — smooth engagement, no slip or judder</span><span class="hint">For manual variant: check bite point, smooth shifting through all gears</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All gears shift smoothly — no grinding or difficulty</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Reverse gear engages properly</span></div></div>
+
+            <div class="subsection-title">Noise & Feel</div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No rattles, squeaks, or clunks from cabin</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No unusual noise from suspension over bumps</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">No vibration at speed (40-60 km/h)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Speedometer and fuel gauge responding properly</span></div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 9: Safety -->
+    <div class="section" id="sec-safety">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#128737;&#65039;</span> Safety Features</h2>
+            <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
+        </div>
+        <div class="section-body">
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Airbag indicator — lights up on ignition, then goes off</span><span class="hint critical">&#9888; If airbag light stays on = critical safety issue</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">ABS indicator — lights up on ignition, then goes off</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Seatbelt reminder / warning chime works</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Central locking from key fob — lock + unlock</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">ISOFIX child seat anchors present (2nd row)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Rear parking sensors working (beeping)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">High-speed alert (80/120 km/h warning) configured</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">First-aid kit / safety triangle / fire extinguisher</span><span class="hint">May not be included by default — good to confirm</span></div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 10: Accessories & Toolkit -->
+    <div class="section" id="sec-accessories">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#128295;</span> Accessories & Toolkit</h2>
+            <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
+        </div>
+        <div class="section-body">
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Jack + jack handle present in boot</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Wheel wrench present</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Tow hook present</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Spare tyre — full size or space saver, inflated</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All dealer-promised accessories installed</span><span class="hint">Cross-check with booking sheet — mats, mudflaps, seat covers, etc.</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Number plates properly fitted (front & rear)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Mudflaps installed on all 4 wheels</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Fuel level — at least quarter tank for drive home</span></div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 11: Final Checklist -->
+    <div class="section" id="sec-final">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#9989;</span> Final Before Signing</h2>
+            <div><span class="section-badge badge-pending" data-badge></span> <span class="chevron">&#9660;</span></div>
+        </div>
+        <div class="section-body">
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">All issues noted & acknowledged by dealer in writing</span><span class="hint critical">&#9888; Get written acknowledgment for every issue found</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Dealer walkthrough / demonstration completed</span><span class="hint">Infotainment, AC, Kia Connect, drive modes, etc.</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">First free service date discussed</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Service center location & contact saved</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Roadside assistance number saved in phone</span><span class="hint">Kia RSA: 1800-108-5000 (toll free)</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Take delivery photos — all angles, VIN, odometer</span></div></div>
+            <div class="check-item"><input type="checkbox" onchange="handleCheck(this)"><div class="check-text"><span class="label">Satisfaction with PDI — ready to accept delivery</span></div></div>
+        </div>
+    </div>
+
+    <!-- Issues Log -->
+    <div class="issues-section">
+        <h2>&#128680; Issues Found During PDI</h2>
+        <div class="issue-input-row">
+            <input type="text" class="issue-input" id="issueInput" placeholder="Describe the issue...">
+            <button class="issue-btn" onclick="addIssue()">+ Add Issue</button>
+        </div>
+        <ul class="issue-list" id="issueList"></ul>
+    </div>
+
+    <!-- Notes -->
+    <div class="section" id="sec-notes" style="overflow:visible;">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h2><span class="icon">&#128221;</span> Personal Notes</h2>
+            <span class="chevron">&#9660;</span>
+        </div>
+        <div class="section-body">
+            <textarea class="notes-area" id="notesArea" placeholder="Write any additional notes, dealer promises, or observations here..." onchange="saveState()"></textarea>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Summary Bar -->
+<div class="float-summary">
+    <div class="stats">
+        <div><span class="stat-val" id="checkedCount">0</span> / <span id="totalCount">0</span> Checked</div>
+        <div>Issues: <span class="stat-val" id="issueCount">0</span></div>
+    </div>
+    <button class="reset-btn" onclick="resetAll()">Reset All</button>
+</div>
+
+<script>
+    document.getElementById('date-display').textContent = new Date().toLocaleDateString('en-IN', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    function toggleSection(header) {
+        header.closest('.section').classList.toggle('open');
+    }
+
+    function handleCheck(checkbox) {
+        checkbox.closest('.check-item').classList.toggle('checked', checkbox.checked);
+        updateProgress();
+        saveState();
+    }
+
+    function updateProgress() {
+        const all = document.querySelectorAll('.check-item input[type="checkbox"]');
+        const checked = document.querySelectorAll('.check-item input[type="checkbox"]:checked');
+        const total = all.length;
+        const done = checked.length;
+        const pct = total ? Math.round((done / total) * 100) : 0;
+
+        document.getElementById('progressBar').style.width = pct + '%';
+        document.getElementById('progressText').textContent = `${done} / ${total} checked (${pct}%)`;
+        document.getElementById('checkedCount').textContent = done;
+        document.getElementById('totalCount').textContent = total;
+
+        document.querySelectorAll('.section').forEach(sec => {
+            const badge = sec.querySelector('[data-badge]');
+            if (!badge) return;
+            const items = sec.querySelectorAll('.check-item input[type="checkbox"]');
+            const secChecked = sec.querySelectorAll('.check-item input[type="checkbox"]:checked');
+            if (items.length === 0) return;
+            if (secChecked.length === 0) {
+                badge.className = 'section-badge badge-pending';
+                badge.textContent = `0 / ${items.length}`;
+            } else if (secChecked.length === items.length) {
+                badge.className = 'section-badge badge-done';
+                badge.textContent = 'Done ✓';
+            } else {
+                badge.className = 'section-badge badge-partial';
+                badge.textContent = `${secChecked.length} / ${items.length}`;
+            }
+        });
+    }
+
+    function addIssue() {
+        const input = document.getElementById('issueInput');
+        const text = input.value.trim();
+        if (!text) return;
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${text}</span><button class="remove-issue" onclick="this.parentElement.remove(); updateIssueCount(); saveState();">&times;</button>`;
+        document.getElementById('issueList').appendChild(li);
+        input.value = '';
+        updateIssueCount();
+        saveState();
+    }
+
+    document.getElementById('issueInput').addEventListener('keypress', e => {
+        if (e.key === 'Enter') addIssue();
+    });
+
+    function updateIssueCount() {
+        document.getElementById('issueCount').textContent = document.querySelectorAll('#issueList li').length;
+    }
+
+    function saveState() {
+        const state = {
+            checks: [],
+            brings: [],
+            issues: [],
+            notes: document.getElementById('notesArea').value
+        };
+        document.querySelectorAll('.check-item input[type="checkbox"]').forEach((cb, i) => {
+            if (cb.checked) state.checks.push(i);
+        });
+        document.querySelectorAll('.bring-item input[type="checkbox"]').forEach((cb, i) => {
+            if (cb.checked) state.brings.push(i);
+        });
+        document.querySelectorAll('#issueList li span').forEach(s => {
+            state.issues.push(s.textContent);
+        });
+        localStorage.setItem('kia-carens-pdi', JSON.stringify(state));
+    }
+
+    function loadState() {
+        const saved = localStorage.getItem('kia-carens-pdi');
+        if (!saved) return;
+        const state = JSON.parse(saved);
+        state.checks.forEach(i => {
+            const cbs = document.querySelectorAll('.check-item input[type="checkbox"]');
+            if (cbs[i]) { cbs[i].checked = true; cbs[i].closest('.check-item').classList.add('checked'); }
+        });
+        state.brings.forEach(i => {
+            const cbs = document.querySelectorAll('.bring-item input[type="checkbox"]');
+            if (cbs[i]) { cbs[i].checked = true; cbs[i].closest('.bring-item').classList.add('packed'); }
+        });
+        state.issues.forEach(text => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${text}</span><button class="remove-issue" onclick="this.parentElement.remove(); updateIssueCount(); saveState();">&times;</button>`;
+            document.getElementById('issueList').appendChild(li);
+        });
+        document.getElementById('notesArea').value = state.notes || '';
+        updateProgress();
+        updateIssueCount();
+    }
+
+    function resetAll() {
+        if (!confirm('Reset all checklists and notes? This cannot be undone.')) return;
+        localStorage.removeItem('kia-carens-pdi');
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.checked = false;
+            const item = cb.closest('.check-item') || cb.closest('.bring-item');
+            if (item) { item.classList.remove('checked', 'packed'); }
+        });
+        document.getElementById('issueList').innerHTML = '';
+        document.getElementById('notesArea').value = '';
+        updateProgress();
+        updateIssueCount();
+    }
+
+    loadState();
+    updateProgress();
+</script>
+
+</body>
+</html>
